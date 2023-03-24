@@ -1,9 +1,6 @@
 # yamdb_final
 yamdb_final
 
-# api_yamdb
-api_yamdb
-
 ## Описание
 Api_yamdb - проект, в котором пользователи могут делиться своими отзывами о произведениях при помощи API.
 
@@ -57,6 +54,7 @@ docker-compose exec web python manage.py collectstatic --no-input
 docker-compose exec web python manage.py loaddata ../infra/fixtures.json 
 ```
 
+![workflow status](https://github.com/Deron-The-Great/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
 ### Автор проекта:
 - [Шубин Сергей](https://github.com/Deron-The-Great/)
