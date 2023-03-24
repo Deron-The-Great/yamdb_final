@@ -86,6 +86,7 @@ jobs:
           
   send_message:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: deploy
     steps:
     - name: send message
