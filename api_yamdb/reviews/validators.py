@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 
-from api_yamdb.settings import USERNAME_REGEX, RESERVED_USERNAMES
+from api_yamdb.settings import RESERVED_USERNAMES, USERNAME_REGEX
 
 MESSAGE_REGEX = 'Enter a valid value. Invalid simbols: {}'
 MESSAGE_ME = 'Username "me" is not valid.'

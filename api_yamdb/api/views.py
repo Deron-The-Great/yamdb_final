@@ -1,9 +1,8 @@
-from django.db import IntegrityError
-from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.db import IntegrityError
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
-
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
@@ -11,19 +10,18 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
+from reviews.models import Category, Comment, Genre, Review, Title, User
+
+from api_yamdb.settings import DEFAULT_MAILING_ADDRESS
 
 from .filters import TitleFilter
-from .permissions import (
-    IsAdminOrReadOnly, IsAdminModeratorAuthorOrReadOnly, AdminOnly
-)
-from .serializers import (
-    RegisterDataSerializer, TokenSerializer, GenreSerializer,
-    CategorySerializer, TitleBaseSerializer, TitleAddSerializer,
-    CommentSerializer, ReviewSerializer, UserSerializer,
-    UserEditSerializer
-)
-from api_yamdb.settings import DEFAULT_MAILING_ADDRESS
-from reviews.models import User, Category, Genre, Title, Comment, Review
+from .permissions import (AdminOnly, IsAdminModeratorAuthorOrReadOnly,
+                          IsAdminOrReadOnly)
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, RegisterDataSerializer,
+                          ReviewSerializer, TitleAddSerializer,
+                          TitleBaseSerializer, TokenSerializer,
+                          UserEditSerializer, UserSerializer)
 
 
 def send_email(user):

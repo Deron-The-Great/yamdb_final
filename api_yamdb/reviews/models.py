@@ -1,16 +1,11 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import (
-    MinValueValidator, MaxValueValidator
-)
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from reviews.validators import (me_validator, regex_validator,
+                                validate_year_not_in_future)
 
-
-from reviews.validators import (
-    regex_validator, me_validator, validate_year_not_in_future
-)
-from api_yamdb.settings import (
-    BASE_FIELD_SIZE, NAME_FIELD_SIZE, SLUG_FIELD_SIZE
-)
+from api_yamdb.settings import (BASE_FIELD_SIZE, NAME_FIELD_SIZE,
+                                SLUG_FIELD_SIZE)
 
 
 class User(AbstractUser):

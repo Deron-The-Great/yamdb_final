@@ -1,14 +1,11 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
-from django.core.validators import (
-    MinValueValidator, MaxValueValidator,
-)
+from reviews.models import Category, Comment, Genre, Review, Title, User
+from reviews.validators import (me_validator, regex_validator,
+                                validate_year_not_in_future)
 
 from api_yamdb.settings import BASE_FIELD_SIZE, NAME_FIELD_SIZE
-from reviews.validators import (
-    regex_validator, me_validator, validate_year_not_in_future
-)
-from reviews.models import User, Category, Genre, Title, Comment, Review
 
 
 class RegisterDataSerializer(serializers.Serializer):

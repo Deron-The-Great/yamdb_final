@@ -1,8 +1,9 @@
-import os
 import csv
-from django.core.management.base import BaseCommand
+import os
+
 from django.conf import settings
-from reviews.models import Category, Genre, Title, Review, Comments, User
+from django.core.management.base import BaseCommand
+from reviews.models import Category, Comments, Genre, Review, Title, User
 
 CSV_FILES_AND_MODELS = [
     ("category.csv", Category),
