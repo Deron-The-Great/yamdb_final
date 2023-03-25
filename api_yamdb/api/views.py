@@ -5,9 +5,11 @@ from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, permissions, status, viewsets
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import (action, api_view, permission_classes,
+                                       renderer_classes)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import SAFE_METHODS
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 from reviews.models import Category, Comment, Genre, Review, Title, User
@@ -38,6 +40,7 @@ def send_email(user):
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
+@renderer_classes([JSONRenderer])
 def register(request):
     serializer = RegisterDataSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -57,6 +60,7 @@ def register(request):
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
+@renderer_classes([JSONRenderer])
 def get_token(request):
     serializer = TokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -83,6 +87,7 @@ class CategoryGenreViewSet(
     permission_classes = [
         IsAdminOrReadOnly,
     ]
+    renderer_class = JSONRenderer
     pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter, )
     search_fields = ('name', )
@@ -92,11 +97,13 @@ class CategoryGenreViewSet(
 class GenreViewSet(CategoryGenreViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    renderer_class = JSONRenderer
 
 
 class CategoryViewSet(CategoryGenreViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    renderer_class = JSONRenderer
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -106,6 +113,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     filterset_class = TitleFilter
     permission_classes = [IsAdminOrReadOnly, ]
     ordering = ['name']
+    renderer_class = JSONRenderer
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -118,6 +126,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = (IsAdminModeratorAuthorOrReadOnly,
                           permissions.IsAuthenticatedOrReadOnly)
+    renderer_class = JSONRenderer
 
     def get_review(self):
         return get_object_or_404(Review, id=self.kwargs.get('review_id'))
@@ -136,6 +145,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         IsAdminModeratorAuthorOrReadOnly,
         permissions.IsAuthenticatedOrReadOnly
     )
+    renderer_class = JSONRenderer
 
     def get_title(self):
         return get_object_or_404(Title, id=self.kwargs.get('title_id'))
@@ -155,6 +165,7 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ('username',)
     lookup_field = 'username'
     http_method_names = ['get', 'post', 'patch', 'delete']
+    renderer_class = JSONRenderer
 
     @action(
         methods=['GET', 'PATCH'],
